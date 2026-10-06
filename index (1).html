@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rahul Saini — GenAI Engineer</title>
+<meta name="description" content="Rahul Saini — GenAI Engineer building RAG pipelines, multi-agent systems, and retrieval architectures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0E13;
+    --bg-elevated: #10151D;
+    --surface: #161D28;
+    --surface-hover: #1C2432;
+    --border: #262F3F;
+    --border-soft: #1D2532;
+    --text-primary: #EDF1F5;
+    --text-secondary: #9AA8BA;
+    --text-tertiary: #5E6B7D;
+    --accent: #5B6172;
+    --accent-dim: #454A58;
+    --accent-light: #8389A0;
+    --route-correct: #4FD1C5;
+    --route-ambiguous: #5B6172;
+    --warm-heading: #E8A348;
+    --graphite-blue: #7E8DAC;
+    --route-incorrect: #E8735F;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1120px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(91,97,114,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(79,209,197,0.05), transparent 55%),
+      var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* blueprint grid texture */
+  .grid-bg{
+    position: fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(154,168,186,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(154,168,186,0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 1200px 800px at 50% 0%, black, transparent 70%);
+  }
+
+  .wrap{ max-width: var(--max-width); margin:0 auto; padding: 0 32px; position:relative; z-index:1; }
+
+  a{ color: inherit; text-decoration:none; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--route-correct);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:''; width:16px; height:1px; background: var(--accent-dim);
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight:600; letter-spacing:-0.01em; color: var(--text-primary); }
+
+  /* ===== NAV ===== */
+  header{
+    position: sticky; top:0; z-index:50;
+    backdrop-filter: blur(14px);
+    background: rgba(10,14,19,0.72);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  nav{
+    max-width: var(--max-width); margin:0 auto; padding: 18px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{
+    font-family: var(--font-mono); font-weight:600; font-size:15px;
+    color: var(--route-correct); letter-spacing: 0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{ width:7px; height:7px; border-radius:50%; background: var(--route-correct); box-shadow:0 0 10px var(--route-correct); }
+  .nav-links{ display:flex; gap:32px; font-size:14px; color: var(--text-secondary); }
+  .nav-links a{ transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a:focus-visible{ color: var(--text-primary); }
+  .nav-cta{
+    font-family: var(--font-mono); font-size:13px; padding:9px 16px;
+    border:1px solid var(--border); border-radius:6px; color:var(--text-primary);
+    transition: all 0.2s;
+  }
+  .nav-cta:hover, .nav-cta:focus-visible{ border-color: var(--accent); color: var(--accent); }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--text-primary); font-size:22px; cursor:pointer; }
+
+  @media (max-width: 780px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+  }
+
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+
+  /* ===== HERO ===== */
+  .hero{ padding: 96px 0 72px; }
+  .hero-inner{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:56px; align-items:center; }
+  @media (max-width: 900px){ .hero-inner{ grid-template-columns:1fr; gap:48px; } }
+
+  .hero h1{
+    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+    line-height:1.08; margin: 18px 0 22px;
+  }
+  .hero h1 .accent-word{ color: var(--route-correct); }
+  .hero p.lede{
+    font-size: 17px; color: var(--text-secondary); max-width: 46ch; margin-bottom: 30px;
+  }
+  .hero p.lede strong{ color: var(--text-primary); font-weight:600; }
+
+  .cta-row{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom: 34px; }
+  .btn{
+    font-family: var(--font-mono); font-size:13.5px; font-weight:500;
+    padding: 13px 22px; border-radius:7px; display:inline-flex; align-items:center; gap:8px;
+    transition: all 0.2s ease; cursor:pointer; border:1px solid transparent;
+  }
+  .btn-primary{ background: var(--accent); color:#EDF1F5; }
+  .btn-primary:hover, .btn-primary:focus-visible{ background: var(--accent-light); transform: translateY(-1px); }
+  .btn-ghost{ border-color: var(--border); color: var(--text-primary); }
+  .btn-ghost:hover, .btn-ghost:focus-visible{ border-color: var(--text-secondary); background: var(--surface); }
+
+  .hero-meta{ display:flex; flex-wrap:wrap; gap: 22px; font-size:13px; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .hero-meta span{ display:flex; align-items:center; gap:7px; }
+  .hero-meta .pip{ width:6px; height:6px; border-radius:50%; background: var(--text-tertiary); }
+
+  /* ===== ROUTING DIAGRAM (signature element) ===== */
+  .diagram-card{
+    background: var(--bg-elevated); border:1px solid var(--border); border-radius: 14px;
+    padding: 26px 22px 22px; position:relative; overflow:hidden;
+  }
+  .diagram-label{
+    font-family: var(--font-mono); font-size:11px; color: var(--text-tertiary);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 4px;
+  }
+  .diagram-title{ font-family: var(--font-mono); font-size:13px; color: var(--text-secondary); margin-bottom:18px; }
+  .diagram-title b{ color: var(--text-primary); font-weight:600; }
+
+  svg.routing{ width:100%; height:auto; display:block; }
+  .rnode text{ font-family: var(--font-mono); font-size:11px; fill: var(--text-primary); }
+  .rnode rect{ fill: var(--surface); stroke: var(--border); stroke-width:1; }
+  .rlabel{ font-family: var(--font-mono); font-size:9.5px; fill: var(--text-tertiary); letter-spacing:0.04em; }
+  .rline{ stroke: var(--border); stroke-width:1.4; fill:none; }
+  .rline.active{ stroke-width:1.8; }
+
+  .diagram-caption{ font-size: 12.5px; color: var(--text-tertiary); margin-top:16px; line-height:1.55; }
+  .diagram-caption a{ color: var(--accent); border-bottom:1px dotted var(--accent-dim); }
+
+  /* ===== SECTION HEADERS ===== */
+  section{ padding: 88px 0; position:relative; }
+  .section-head{ margin-bottom: 48px; max-width: 640px; }
+  .section-head h2{ font-size: clamp(1.6rem, 3vw, 2.1rem); margin-top:14px; color: var(--warm-heading); }
+  .section-head p{ color: var(--text-secondary); margin-top:12px; font-size:15px; }
+
+  .divider{ border:none; border-top:1px solid var(--border-soft); }
+
+  /* ===== ABOUT ===== */
+  .about-grid{ display:grid; grid-template-columns: 1fr; gap:20px; max-width: 760px; }
+  .about-grid p{ color: var(--text-secondary); font-size:15.5px; }
+  .about-grid p strong{ color: var(--text-primary); font-weight:600; }
+  .proof-row{ display:flex; flex-wrap:wrap; gap:14px; margin-top:26px; }
+  .proof-chip{
+    font-family: var(--font-mono); font-size:12.5px; color: var(--route-correct);
+    background: rgba(79,209,197,0.08); border:1px solid rgba(79,209,197,0.35); border-radius:20px; padding:8px 15px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .proof-chip .n{ color: var(--route-correct); font-weight:600; }
+
+  /* ===== SKILLS ===== */
+  .skills-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border-soft); border:1px solid var(--border-soft); border-radius:12px; overflow:hidden; }
+  @media (max-width: 780px){ .skills-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px){ .skills-grid{ grid-template-columns: 1fr; } }
+  .skill-cell{ background: var(--bg-elevated); padding: 24px 22px; }
+  .skill-cell h3{ font-size:13px; font-family: var(--font-mono); color: var(--route-correct); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; font-weight:600; }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .skill-tag{ font-family: var(--font-mono); font-size:12px; color: rgb(156, 143, 224); background: rgba(156, 143, 224, 0.1); border:1px solid rgba(156, 143, 224, 0.4); padding:5px 10px; border-radius:5px; }
+
+  /* ===== PROJECTS ===== */
+  .project-card{
+    display:grid; grid-template-columns: 1fr 1fr; gap:0;
+    border:1px solid var(--border-soft); border-radius:14px; overflow:hidden; margin-bottom:22px;
+    background: var(--bg-elevated);
+    transition: border-color 0.25s;
+  }
+  .project-card:hover{ border-color: var(--border); }
+  @media (max-width: 860px){ .project-card{ grid-template-columns:1fr; } }
+
+  .project-side{ padding: 30px 32px; border-right:1px solid var(--border-soft); }
+  @media (max-width: 860px){ .project-side{ border-right:none; border-bottom:1px solid var(--border-soft); } }
+  .project-index{ font-family: var(--font-mono); font-size:11.5px; color: var(--text-tertiary); margin-bottom:10px; }
+  .project-side h3{ font-size: 20px; margin-bottom: 10px; color: var(--route-correct); }
+  .project-stack{ display:flex; flex-wrap:wrap; gap:7px; margin: 14px 0 20px; }
+  .stack-pill{ font-family: var(--font-mono); font-size:11px; color: rgb(156, 143, 224); background: rgba(156, 143, 224, 0.1); border:1px solid rgba(156, 143, 224, 0.4); padding:4px 9px; border-radius:4px; }
+  .project-links{ display:flex; gap:12px; }
+  .project-links a{
+    font-family: var(--font-mono); font-size:12.5px; display:flex; align-items:center; gap:6px;
+    color: var(--text-secondary); border:1px solid var(--border); padding:8px 13px; border-radius:6px;
+    transition: all 0.2s;
+  }
+  .project-links a:hover, .project-links a:focus-visible{ color:var(--text-primary); border-color: var(--text-secondary); }
+  .project-links a.live{ color: var(--route-correct); border-color: rgba(79,209,197,0.3); }
+  .project-links a.live:hover{ border-color: var(--route-correct); }
+  .project-links a.github{ color: #F2C94C; background: rgba(242,201,76,0.08); border-color: rgba(242,201,76,0.35); }
+  .project-links a.github:hover, .project-links a.github:focus-visible{ border-color: #F2C94C; color: #F2C94C; }
+
+  .project-body{ padding: 30px 32px; }
+  .pbf{ margin-bottom:16px; }
+  .pbf:last-child{ margin-bottom:0; }
+  .pbf-label{ font-family: var(--font-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em; color: var(--text-tertiary); margin-bottom:6px; }
+  .pbf-label.result{ color: var(--route-correct); }
+  .pbf p{ font-size: 14.5px; color: var(--text-secondary); }
+  .pbf p strong{ color:var(--text-primary); font-weight:600; }
+
+  /* ===== OTHER PROJECTS ===== */
+  .other-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; }
+  @media (max-width: 700px){ .other-grid{ grid-template-columns: 1fr; } }
+  .other-card{
+    background: var(--bg-elevated); border:1px solid var(--border-soft); border-radius:12px;
+    padding: 22px 24px; transition: border-color 0.2s;
+  }
+  .other-card:hover{ border-color: var(--border); }
+  .other-card h4{ font-family: var(--font-display); font-size:16px; margin-bottom:8px; color: var(--route-correct); }
+  .other-card p{ font-size:13.5px; color: var(--text-secondary); margin-bottom:14px; }
+  .other-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+  .other-tags span{ font-family: var(--font-mono); font-size:10.5px; color: rgb(156, 143, 224); background: rgba(156, 143, 224, 0.1); border:1px solid rgba(156, 143, 224, 0.4); padding:3px 8px; border-radius:4px; }
+  .other-card a.gh{ font-family: var(--font-mono); font-size:12px; color: var(--text-secondary); display:inline-flex; gap:6px; align-items:center; }
+  .other-card a.gh:hover{ color: var(--accent); }
+
+  /* ===== CONTACT ===== */
+  .contact-section{ padding-bottom: 120px; }
+  .contact-card{
+    background: var(--bg-elevated); border:1px solid var(--border); border-radius:16px;
+    padding: 52px 44px; text-align:center;
+    background-image: radial-gradient(ellipse 500px 260px at 50% 0%, rgba(91,97,114,0.12), transparent 70%);
+  }
+  .contact-card h2{ font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin-bottom:14px; color: #2BB8B3; }
+  .contact-card p{ color: var(--text-secondary); max-width: 48ch; margin: 0 auto 32px; font-size:15px; }
+  .contact-grid{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+  .contact-pill{
+    font-family: var(--font-mono); font-size:13.5px; padding:12px 20px; border-radius:8px;
+    border:1px solid var(--border); color: var(--text-primary); display:flex; align-items:center; gap:9px;
+    transition: all 0.2s;
+  }
+  .contact-pill:hover, .contact-pill:focus-visible{ border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .contact-pill.primary{ background: var(--accent); color:#EDF1F5; border-color:var(--accent); }
+  .contact-pill.primary:hover{ background: var(--accent-light); color:#EDF1F5; }
+
+  footer{ padding: 32px 0 48px; text-align:center; }
+  footer p{ font-family: var(--font-mono); font-size:12px; color: var(--text-tertiary); }
+
+  /* reveal on scroll */
+  .reveal{ opacity:0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header>
+  <nav>
+    <a href="#top" class="logo"><span class="dot"></span>RAHUL SAINI</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#other-projects">More</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="nav-cta" href="mailto:rahulsainihimmatpura@gmail.com">Get in touch</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <p class="eyebrow">GenAI Engineer · Jaipur, India</p>
+        <h1>I build LLM systems that <span class="accent-word">survive contact</span> with real data.</h1>
+        <p class="lede">RAG pipelines, multi-agent orchestration, and retrieval architectures — designed, evaluated, and shipped, not just prototyped in a notebook. Most recently, iterative retrieval tuning raised a resume-screening service's top-candidate ATS match accuracy from <strong>70% to 90%</strong>.</p>
+        <div class="cta-row">
+          <a href="#projects" class="btn btn-primary">View Projects →</a>
+          <a href="Rahul_Saini_Resume.pdf" download class="btn btn-ghost">Download Résumé</a>
+          <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+        </div>
+        <div class="hero-meta">
+          <span><span class="pip"></span>400+ LeetCode problems solved</span>
+          <span><span class="pip"></span>11 shipped projects</span>
+          <span><span class="pip"></span>Self-directed, from a village near Jaipur</span>
+        </div>
+      </div>
+
+      <div class="diagram-card">
+        <p class="diagram-label">Signature architecture</p>
+        <p class="diagram-title">How <b>Corrective-RAG</b> decides where an answer comes from</p>
+        <svg class="routing" viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg" aria-label="Animated diagram of adaptive retrieval routing: a query is evaluated, then routed to Correct, Ambiguous, or Incorrect paths before producing an answer.">
+          <!-- nodes -->
+          <g class="rnode"><rect x="140" y="6" width="100" height="34" rx="7"/><text x="190" y="27" text-anchor="middle">Query</text></g>
+          <g class="rnode"><rect x="130" y="76" width="120" height="34" rx="7"/><text x="190" y="97" text-anchor="middle">Evaluate</text></g>
+
+          <g class="rnode"><rect x="10" y="160" width="106" height="34" rx="7" style="stroke:var(--route-correct)"/><text x="63" y="181" text-anchor="middle">Correct</text></g>
+          <g class="rnode"><rect x="137" y="160" width="106" height="34" rx="7" style="stroke:var(--route-ambiguous)"/><text x="190" y="181" text-anchor="middle">Ambiguous</text></g>
+          <g class="rnode"><rect x="264" y="160" width="106" height="34" rx="7" style="stroke:var(--route-incorrect)"/><text x="317" y="181" text-anchor="middle">Incorrect</text></g>
+
+          <text x="63" y="204" class="rlabel" text-anchor="middle">internal only</text>
+          <text x="190" y="204" class="rlabel" text-anchor="middle">internal + web</text>
+          <text x="317" y="204" class="rlabel" text-anchor="middle">web search</text>
+
+          <g class="rnode"><rect x="140" y="248" width="100" height="34" rx="7"/><text x="190" y="269" text-anchor="middle">Answer</text></g>
+
+          <!-- lines -->
+          <path class="rline" d="M190,40 L190,76"/>
+          <path id="l1" class="rline" d="M170,110 C130,130 90,140 63,160"/>
+          <path id="l2" class="rline" d="M190,110 L190,160"/>
+          <path id="l3" class="rline" d="M210,110 C250,130 290,140 317,160"/>
+          <path id="m1" class="rline" d="M63,194 C63,220 120,236 150,254"/>
+          <path id="m2" class="rline" d="M190,194 L190,248"/>
+          <path id="m3" class="rline" d="M317,194 C317,220 260,236 230,254"/>
+
+          <style>
+            #l1,#m1{ stroke: var(--route-correct); }
+            #l2,#m2{ stroke: var(--route-ambiguous); }
+            #l3,#m3{ stroke: var(--route-incorrect); }
+            #l1,#m1,#l2,#m2,#l3,#m3{ stroke-dasharray: 5 4; animation: flow 6s linear infinite; opacity:0.35; }
+            #l2,#m2{ animation-delay:0s; }
+            #l1,#m1{ animation-delay:0s; opacity:0.9; }
+            @keyframes flow{
+              0%,28%{ opacity:0.9; }
+              30%,61%{ opacity:0.35; }
+              33%,62%{ opacity:0.35; }
+              63%,94%{ opacity:0.9; }
+              96%,100%{ opacity:0.35; }
+            }
+            #l2,#m2{ animation-name: flow2; }
+            @keyframes flow2{
+              0%,28%{ opacity:0.35; }
+              30%,61%{ opacity:0.9; }
+              63%,100%{ opacity:0.35; }
+            }
+            #l3,#m3{ animation-name: flow3; }
+            @keyframes flow3{
+              0%,61%{ opacity:0.35; }
+              63%,94%{ opacity:0.9; }
+              96%,100%{ opacity:0.35; }
+            }
+          </style>
+        </svg>
+        <p class="diagram-caption">A retrieval evaluator scores every retrieved document and routes the query down one of three paths before generation — the core idea behind <a href="https://github.com/rahul-x-saini/Corrective-RAG" target="_blank" rel="noopener">Corrective-RAG</a>, rebuilt from the original research paper.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider wrap">
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">About</p>
+        <h2>Self-taught, on purpose.</h2>
+      </div>
+      <div class="about-grid reveal">
+        <p>I left a BSc in Mathematics after one year — not to drift, but to point everything I had at one thing: becoming an AI engineer who ships. No bootcamp, no cohort, no mentor on payroll. Just research papers, documentation, and a lot of debugging at odd hours in <strong>Himmatpura, Bassi</strong>, near Jaipur.</p>
+        <p>That decision only means something if the follow-through backs it up. So the proof isn't the story — it's <strong>eleven shipped projects</strong>, two of them live and deployed on GCP, one rebuilt directly from a research paper, and <strong>400+ solved problems</strong> logged over time, not in a weekend sprint.</p>
+        <p>I'd rather show you a system that works — and be upfront about the one that didn't beat its baseline — than inflate a resume line. That's the engineer you'd be hiring.</p>
+      </div>
+      <div class="proof-row reveal">
+        <span class="proof-chip"><span class="n">7</span>&nbsp;core LLM/agent systems</span>
+        <span class="proof-chip"><span class="n">2</span>&nbsp;live deployments on GCP</span>
+        <span class="proof-chip"><span class="n">70→90%</span>&nbsp;ATS match accuracy gain</span>
+        <span class="proof-chip"><span class="n">400+</span>&nbsp;LeetCode problems</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider wrap">
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Stack</p>
+        <h2>Tools I reach for, and why.</h2>
+        <p>Grouped by what each layer of a production LLM system actually needs.</p>
+      </div>
+      <div class="skills-grid reveal">
+        <div class="skill-cell">
+          <h3>Orchestration & Agents</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">LangChain</span><span class="skill-tag">LangGraph</span>
+            <span class="skill-tag">CrewAI</span><span class="skill-tag">MCP</span>
+            <span class="skill-tag">Agentic AI</span>
+          </div>
+        </div>
+        <div class="skill-cell">
+          <h3>Retrieval & Search</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">FAISS</span><span class="skill-tag">ChromaDB</span>
+            <span class="skill-tag">Semantic Search</span><span class="skill-tag">Sentence Transformers</span>
+          </div>
+        </div>
+        <div class="skill-cell">
+          <h3>Serving & Deployment</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">FastAPI</span><span class="skill-tag">Docker</span>
+            <span class="skill-tag">GCP</span><span class="skill-tag">REST APIs</span>
+            <span class="skill-tag">WebSockets</span>
+          </div>
+        </div>
+        <div class="skill-cell">
+          <h3>Evaluation & Tracking</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">MLflow</span><span class="skill-tag">Pydantic</span>
+            <span class="skill-tag">Precision/Recall@K</span><span class="skill-tag">NDCG</span>
+          </div>
+        </div>
+        <div class="skill-cell">
+          <h3>LLM Ecosystem</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">OpenAI API</span><span class="skill-tag">Gemini API</span>
+            <span class="skill-tag">Hugging Face</span><span class="skill-tag">Ollama</span>
+            <span class="skill-tag">Tavily</span>
+          </div>
+        </div>
+        <div class="skill-cell">
+          <h3>Core Engineering</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span><span class="skill-tag">C++</span>
+            <span class="skill-tag">SQL</span><span class="skill-tag">PyTorch</span>
+            <span class="skill-tag">Streamlit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider wrap">
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Selected Work</p>
+        <h2>Seven systems, built to production standards.</h2>
+        <p>Each one: the problem it solves, the architecture decisions behind it, and the measured result — not just a tech-stack list.</p>
+      </div>
+
+      <!-- 1 CRAG -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">01 / Flagship</p>
+          <h3>Adaptive Corrective RAG (CRAG)</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Retrieval quality evaluation with sentence-level knowledge refinement.</p>
+          <div class="project-stack">
+            <span class="stack-pill">LangGraph</span><span class="stack-pill">FAISS</span>
+            <span class="stack-pill">OpenAI</span><span class="stack-pill">Tavily</span>
+            <span class="stack-pill">Pydantic</span>
+          </div>
+          <div class="project-links">
+            <a class="github" href="https://github.com/rahul-x-saini/Corrective-RAG" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Problem</p>
+            <p>Traditional RAG blindly trusts whatever gets retrieved — bad retrieval silently becomes a bad, hallucinated answer.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>Rebuilt the <strong>Corrective-RAG paper's</strong> architecture from scratch: an LLM-based evaluator scores retrieved documents and routes each query through internal retrieval, web-search fallback, or a hybrid path — with sentence-level decomposition and relevance filtering before generation, and Pydantic-validated structured routing throughout.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Result</p>
+            <p>This routing logic is the architecture underneath the Resume Screener's jump from <strong>~70% to ~90%</strong> ATS match accuracy.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2 Resume Screener -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">02 / Deployed</p>
+          <h3>AI Resume Screener</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Production API and microservice, live on GCP.</p>
+          <div class="project-stack">
+            <span class="stack-pill">FastAPI</span><span class="stack-pill">FAISS</span>
+            <span class="stack-pill">Gemini</span><span class="stack-pill">Docker</span>
+            <span class="stack-pill">GCP</span>
+          </div>
+          <div class="project-links">
+            <a class="live" href="https://drive.google.com/file/d/1L_ubrNLWsBVpuvVXc--jxTYpHMO7ybPg/view?usp=sharing" target="_blank" rel="noopener">Demo Video ↗</a>
+            <a class="github" href="https://github.com/rahul-x-saini/ai_resume_screener" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Problem</p>
+            <p>Manual resume screening doesn't scale, and most automated scorers give recruiters a number with no explanation.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>Built a REST microservice combining keyword matching with FAISS + Sentence-Transformer semantic similarity for hybrid ranking, with Gemini-generated recruiter-style summaries streamed live via WebSockets. Containerized and deployed on GCP with batch processing and structured error handling so one bad resume can't take down a run.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Result</p>
+            <p>Iterative retrieval and ranking tuning raised top-candidate ATS match accuracy from <strong>~70% to ~90%</strong>.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 Multi agent blog -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">03 / Multi-Agent</p>
+          <h3>Multi-Agent Blog Writing System</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Orchestrator-worker pipeline with parallel fan-out agents.</p>
+          <div class="project-stack">
+            <span class="stack-pill">LangGraph</span><span class="stack-pill">GPT-4.1 mini</span>
+            <span class="stack-pill">Tavily</span><span class="stack-pill">Gemini Image API</span>
+          </div>
+          <div class="project-links">
+            <a class="github" href="https://github.com/rahul-x-saini/AI_Blog_Writing_System" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Problem</p>
+            <p>Producing well-researched, structured long-form technical content end-to-end is slow for a single writer or agent.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>An orchestrator agent plans sections (title, audience, tone, tasks); fan-out worker agents write in parallel; a reducer merges the output. An adaptive router picks closed-book, hybrid, or open-book generation depending on whether a topic needs research via Tavily, and an image-planning agent auto-generates technical diagrams through the Gemini Image API.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Result</p>
+            <p>Rewriting agent prompts for fact-grounding and strict instruction-following improved content quality by <strong>~15%</strong> under rubric-based manual evaluation.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4 Self reflective -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">04 / Research-based</p>
+          <h3>Self-Reflective RAG</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Grounding verification and usefulness checks, built into the graph.</p>
+          <div class="project-stack">
+            <span class="stack-pill">LangGraph</span><span class="stack-pill">FAISS</span>
+            <span class="stack-pill">OpenAI</span>
+          </div>
+          <div class="project-links">
+            <a class="github" href="https://github.com/rahul-x-saini/self-reflective-RAG" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Problem</p>
+            <p>Standard RAG has no built-in way to check whether a generated answer is actually grounded in what was retrieved, or even useful.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>A LangGraph state machine adds an adaptive retrieval decision, strict relevance filtering, a grounding-verification step (<strong>IsSUP</strong>: fully / partially / not supported) with automatic revision, and a usefulness check (<strong>IsUSE</strong>) that triggers query rewriting and retry when an answer misses the question.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Result</p>
+            <p>A verification-first pipeline with retry-safe routing and quote-only revision — built to reduce hallucination at the source, not patch it after the fact.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5 CrewAI guide -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">05 / Framework Range</p>
+          <h3>AI Guide Generator</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Hierarchical + sequential crews via CrewAI.</p>
+          <div class="project-stack">
+            <span class="stack-pill">CrewAI</span><span class="stack-pill">CrewAI Flow</span>
+          </div>
+          <div class="project-links">
+            <a class="github" href="https://github.com/rahul-x-saini/ai_learning_guide" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Problem</p>
+            <p>Turning scattered raw learning material — videos, papers, docs — into a coherent beginner-friendly guide takes real editorial effort.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>A two-stage pipeline: a <strong>hierarchical Research Crew</strong> (YouTube, Web, Arxiv, and Document specialist agents under a coordinator) compiles findings, then a <strong>sequential Writing Crew</strong> drafts and polishes — the whole thing orchestrated as a stateful CrewAI Flow.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Result</p>
+            <p>A second agentic framework alongside LangGraph — proof the orchestration skills generalize past one library.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6 Reddit monitor -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">06 / Product Thinking</p>
+          <h3>AI Reddit Brand Monitor</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Local-LLM sentiment dashboard for brand tracking.</p>
+          <div class="project-stack">
+            <span class="stack-pill">Ollama</span><span class="stack-pill">PRAW</span>
+            <span class="stack-pill">Streamlit</span><span class="stack-pill">Plotly</span>
+          </div>
+          <div class="project-links">
+            <a class="github" href="https://github.com/rahul-x-saini/ai_reddit_business_analyst" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Problem</p>
+            <p>Businesses need to know what's being said about them on Reddit without someone manually reading every thread.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>PRAW-based scraping with a JSON fallback feeds a local LLM (via Ollama) that classifies each mention by sentiment, topic, and urgency. A Streamlit + Plotly dashboard visualizes the breakdown and auto-generates positive-feedback, negative-issue, and feature-request summaries.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Result</p>
+            <p>An end-to-end product loop — collection to actionable insight — running entirely on local inference, no API cost per classification.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- 7 Recommender -->
+      <article class="project-card reveal">
+        <div class="project-side">
+          <p class="project-index">07 / Evaluation Case Study</p>
+          <h3>Hybrid Movie Recommender</h3>
+          <p style="color:var(--text-secondary); font-size:14px;">Where the honest result mattered more than a clean win.</p>
+          <div class="project-stack">
+            <span class="stack-pill">XGBoost</span><span class="stack-pill">MLflow</span>
+            <span class="stack-pill">Docker</span><span class="stack-pill">GCP</span>
+          </div>
+          <div class="project-links">
+            <a class="live" href="https://drive.google.com/file/d/1ildfLe1QS53dVf1ddTfEHUFC4mFRBGBG/view?usp=sharing" target="_blank" rel="noopener">Demo Video ↗</a>
+            <a class="github" href="https://github.com/rahul-x-saini/hybrid_movie_recommender" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="pbf">
+            <p class="pbf-label">Approach</p>
+            <p>Collaborative filtering (matrix factorization) and content-based filtering (TF-IDF) generate candidates, re-ranked by an <strong>XGBoost Learning-to-Rank</strong> model. Every experiment — hyperparameters, Precision@K, Recall@K, NDCG, Hit Rate — is logged in MLflow; deployed via Docker on GCP.</p>
+          </div>
+          <div class="pbf">
+            <p class="pbf-label result">Honest Result</p>
+            <p>Evaluation showed the <strong>popularity baseline actually outperformed</strong> the trained ranker. Rather than hide that, I'm including it as a case study: rigorous, logged evaluation — and the willingness to report a model that didn't beat baseline — over a premature "it works" claim.</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <hr class="divider wrap">
+
+  <!-- OTHER PROJECTS -->
+  <section id="other-projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">More Builds</p>
+        <h2>Smaller systems, same habits.</h2>
+        <p>Shipped for practice and range — local inference, multimodal generation, and tool-using agents.</p>
+      </div>
+      <div class="other-grid reveal">
+        <div class="other-card">
+          <h4>AI Story Generator</h4>
+          <p>Multimodal pipeline — Gemini turns up to 50 uploaded images into one connected, genre-conditioned story, then narrates it with gTTS.</p>
+          <div class="other-tags"><span>Gemini</span><span>Streamlit</span><span>gTTS</span></div>
+          <a class="gh" href="https://github.com/rahul-x-saini/Ai-story-Generator" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="other-card">
+          <h4>Your Morning Buddy</h4>
+          <p>A tool-using Gemini agent for weather, news summarization, and local events — plus a smart planner that reasons across all three to build a day itinerary.</p>
+          <div class="other-tags"><span>Gemini Function Calling</span><span>Streamlit</span></div>
+          <a class="gh" href="https://github.com/rahul-x-saini/Your-Morning-Buddy" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="other-card">
+          <h4>YouTube Content Synthesizer</h4>
+          <p>Pulls a video transcript, translates it if needed, generates notes and key topics, and opens a RAG chat over the video content via ChromaDB.</p>
+          <div class="other-tags"><span>LangChain</span><span>ChromaDB</span><span>Gemini</span></div>
+          <a class="gh" href="https://github.com/rahul-x-saini/youtube-content-synthesizer" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="other-card">
+          <h4>Ollama + ChromaDB RAG</h4>
+          <p>A fully local, offline PDF RAG pipeline — no API cost per query, no data leaving the machine.</p>
+          <div class="other-tags"><span>Ollama</span><span>ChromaDB</span><span>LangChain</span></div>
+          <a class="gh" href="https://github.com/rahul-x-saini/Ollama-Chroma-RAG" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="wrap">
+      <div class="contact-card reveal">
+        <p class="eyebrow" style="justify-content:center;">Let's talk</p>
+        <h2>Building GenAI systems, looking for the team to build them with.</h2>
+        <p>Open to full-time GenAI / LLM Engineering roles. The fastest way to reach me is email or LinkedIn — happy to walk through any of these projects in detail.</p>
+        <div class="contact-grid">
+          <a class="contact-pill primary" href="mailto:rahulsainihimmatpura@gmail.com">Email me ↗</a>
+          <a class="contact-pill" href="tel:+919694770048">+91 96947 70048</a>
+          <a class="contact-pill" href="https://www.linkedin.com/in/rahul-saini-95b539359/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="contact-pill" href="https://github.com/rahul-x-saini" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="contact-pill" href="https://leetcode.com/u/rahul9166310816/" target="_blank" rel="noopener">LeetCode ↗</a>
+          <a class="contact-pill" href="Rahul_Saini_Resume.pdf" download>Résumé ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Designed &amp; built by Rahul Saini · Himmatpura, Bassi, Jaipur</p>
+</footer>
+
+<script>
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el=> io.observe(el));
+
+  // mobile nav toggle placeholder (nav links hidden on small screens; CTA + logo remain accessible)
+</script>
+
+</body>
+</html>
