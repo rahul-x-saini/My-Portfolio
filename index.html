@@ -267,6 +267,15 @@
   .contact-pill.primary{ background: var(--accent); color:#EDF1F5; border-color:var(--accent); }
   .contact-pill.primary:hover{ background: var(--accent-light); color:#EDF1F5; }
 
+  button.contact-pill{ background:none; cursor:pointer; font-family: var(--font-mono); }
+  .toast{
+    position:fixed; left:50%; bottom:32px; transform: translate(-50%, 20px); opacity:0;
+    background: var(--surface); color: var(--text-primary); border:1px solid var(--route-correct);
+    font-family: var(--font-mono); font-size:13px; padding:11px 18px; border-radius:8px;
+    transition: opacity 0.25s, transform 0.25s; z-index:100; pointer-events:none;
+  }
+  .toast.show{ opacity:1; transform: translate(-50%, 0); }
+
   footer{ padding: 32px 0 48px; text-align:center; }
   footer p{ font-family: var(--font-mono); font-size:12px; color: var(--text-tertiary); }
 
@@ -289,7 +298,7 @@
       <a href="#other-projects">More</a>
       <a href="#contact">Contact</a>
     </div>
-    <a class="nav-cta" href="mailto:rahulsainihimmatpura@gmail.com">Get in touch</a>
+    <a class="nav-cta" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=rahulsainihimmatpura@gmail.com&amp;su=Opportunity%20for%20GenAI%20Engineer%20role&amp;body=Hi%20Rahul%2C%0A%0A" target="_blank" rel="noopener">Get in touch</a>
   </nav>
 </header>
 
@@ -495,7 +504,7 @@
           </div>
           <div class="pbf">
             <p class="pbf-label result">Result</p>
-            <p>This routing logic is the architecture underneath the Resume Screener's jump from <strong>~70% to ~90%</strong> ATS match accuracy.</p>
+            <p>A working implementation of the paper's full control loop (evaluate, route, refine, generate) with logging and error handling at every stage, so a failed step <strong>degrades gracefully</strong> instead of crashing the pipeline.</p>
           </div>
         </div>
       </article>
@@ -728,7 +737,8 @@
         <h2>Building GenAI systems, looking for the team to build them with.</h2>
         <p>Open to full-time GenAI / LLM Engineering roles. The fastest way to reach me is email or LinkedIn — happy to walk through any of these projects in detail.</p>
         <div class="contact-grid">
-          <a class="contact-pill primary" href="mailto:rahulsainihimmatpura@gmail.com">Email me ↗</a>
+          <a class="contact-pill primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=rahulsainihimmatpura@gmail.com&amp;su=Opportunity%20for%20GenAI%20Engineer%20role&amp;body=Hi%20Rahul%2C%0A%0A" target="_blank" rel="noopener">Email me ↗</a>
+          <button type="button" class="contact-pill copy-email" data-email="rahulsainihimmatpura@gmail.com">Copy email</button>
           <a class="contact-pill" href="tel:+919694770048">+91 96947 70048</a>
           <a class="contact-pill" href="https://www.linkedin.com/in/rahul-saini-95b539359/" target="_blank" rel="noopener">LinkedIn ↗</a>
           <a class="contact-pill" href="https://github.com/rahul-x-saini" target="_blank" rel="noopener">GitHub ↗</a>
@@ -754,6 +764,32 @@
     });
   }, { threshold: 0.12 });
   revealEls.forEach(el=> io.observe(el));
+
+  // copy email to clipboard
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.setAttribute('role','status');
+  document.body.appendChild(toast);
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast.t);
+    showToast.t = setTimeout(()=> toast.classList.remove('show'), 2200);
+  }
+  document.querySelectorAll('.copy-email').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const email = btn.dataset.email;
+      try{
+        await navigator.clipboard.writeText(email);
+      }catch(e){
+        const ta = document.createElement('textarea');
+        ta.value = email; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){}
+        document.body.removeChild(ta);
+      }
+      showToast('Email copied: ' + email);
+    });
+  });
 
   // mobile nav toggle placeholder (nav links hidden on small screens; CTA + logo remain accessible)
 </script>
