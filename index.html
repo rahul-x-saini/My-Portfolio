@@ -245,6 +245,11 @@
   .other-card p{ font-size:13.5px; color: var(--text-secondary); margin-bottom:14px; }
   .other-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
   .other-tags span{ font-family: var(--font-mono); font-size:10.5px; color: rgb(156, 143, 224); background: rgba(156, 143, 224, 0.1); border:1px solid rgba(156, 143, 224, 0.4); padding:3px 8px; border-radius:4px; }
+  .group-head{ margin-bottom:18px; }
+  .group-head.group-second{ margin-top:52px; }
+  .group-title{ font-family: var(--font-mono); font-size:13px; text-transform:uppercase; letter-spacing:0.06em; color: var(--route-correct); font-weight:600; margin-bottom:6px; }
+  .group-tag{ font-size:14px; color: var(--text-secondary); }
+  .other-links{ display:flex; gap:18px; flex-wrap:wrap; }
   .other-card a.gh{ font-family: var(--font-mono); font-size:12px; color: var(--text-secondary); display:inline-flex; gap:6px; align-items:center; }
   .other-card a.gh:hover{ color: var(--accent); }
 
@@ -295,7 +300,7 @@
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
-      <a href="#other-projects">More</a>
+      <a href="#other-projects">Learning</a>
       <a href="#contact">Contact</a>
     </div>
     <a class="nav-cta" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=rahulsainihimmatpura@gmail.com&amp;su=Opportunity%20for%20GenAI%20Engineer%20role&amp;body=Hi%20Rahul%2C%0A%0A" target="_blank" rel="noopener">Get in touch</a>
@@ -317,8 +322,8 @@
           <a href="#contact" class="btn btn-ghost">Get in Touch</a>
         </div>
         <div class="hero-meta">
-          <span><span class="pip"></span>400+ LeetCode problems solved</span>
-          <span><span class="pip"></span>11 shipped projects</span>
+          <span><span class="pip"></span>470+ LeetCode problems solved</span>
+          <span><span class="pip"></span>4 shipped projects</span>
           <span><span class="pip"></span>Self-directed, from a village near Jaipur</span>
         </div>
       </div>
@@ -394,14 +399,14 @@
       </div>
       <div class="about-grid reveal">
         <p>I left a BSc in Mathematics after one year — not to drift, but to point everything I had at one thing: becoming an AI engineer who ships. No bootcamp, no cohort, no mentor on payroll. Just research papers, documentation, and a lot of debugging at odd hours in <strong>Himmatpura, Bassi</strong>, near Jaipur.</p>
-        <p>That decision only means something if the follow-through backs it up. So the proof isn't the story — it's <strong>eleven shipped projects</strong>, two of them live and deployed on GCP, one rebuilt directly from a research paper, and <strong>400+ solved problems</strong> logged over time, not in a weekend sprint.</p>
+        <p>That decision only means something if the follow-through backs it up. So the proof isn't the story — it's <strong>four production-style systems</strong>, one deployed on GCP and one rebuilt directly from a research paper, alongside seven learning projects and <strong>470+ solved problems</strong> logged over time, not in a weekend sprint.</p>
         <p>I'd rather show you a system that works — and be upfront about the one that didn't beat its baseline — than inflate a resume line. That's the engineer you'd be hiring.</p>
       </div>
       <div class="proof-row reveal">
-        <span class="proof-chip"><span class="n">7</span>&nbsp;core LLM/agent systems</span>
-        <span class="proof-chip"><span class="n">2</span>&nbsp;live deployments on GCP</span>
+        <span class="proof-chip"><span class="n">4</span>&nbsp;production-style systems</span>
+        <span class="proof-chip"><span class="n">2</span>&nbsp;projects deployed on GCP</span>
         <span class="proof-chip"><span class="n">70→90%</span>&nbsp;ATS match accuracy gain</span>
-        <span class="proof-chip"><span class="n">400+</span>&nbsp;LeetCode problems</span>
+        <span class="proof-chip"><span class="n">470+</span>&nbsp;LeetCode problems</span>
       </div>
     </div>
   </section>
@@ -474,7 +479,7 @@
     <div class="wrap">
       <div class="section-head reveal">
         <p class="eyebrow">Selected Work</p>
-        <h2>Seven systems, built to production standards.</h2>
+        <h2>Four systems, built to production standards.</h2>
         <p>Each one: the problem it solves, the architecture decisions behind it, and the measured result — not just a tech-stack list.</p>
       </div>
 
@@ -601,92 +606,6 @@
         </div>
       </article>
 
-      <!-- 5 CrewAI guide -->
-      <article class="project-card reveal">
-        <div class="project-side">
-          <p class="project-index">05 / Framework Range</p>
-          <h3>AI Guide Generator</h3>
-          <p style="color:var(--text-secondary); font-size:14px;">Hierarchical + sequential crews via CrewAI.</p>
-          <div class="project-stack">
-            <span class="stack-pill">CrewAI</span><span class="stack-pill">CrewAI Flow</span>
-          </div>
-          <div class="project-links">
-            <a class="github" href="https://github.com/rahul-x-saini/ai_learning_guide" target="_blank" rel="noopener">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="pbf">
-            <p class="pbf-label">Problem</p>
-            <p>Turning scattered raw learning material — videos, papers, docs — into a coherent beginner-friendly guide takes real editorial effort.</p>
-          </div>
-          <div class="pbf">
-            <p class="pbf-label">Approach</p>
-            <p>A two-stage pipeline: a <strong>hierarchical Research Crew</strong> (YouTube, Web, Arxiv, and Document specialist agents under a coordinator) compiles findings, then a <strong>sequential Writing Crew</strong> drafts and polishes — the whole thing orchestrated as a stateful CrewAI Flow.</p>
-          </div>
-          <div class="pbf">
-            <p class="pbf-label result">Result</p>
-            <p>A second agentic framework alongside LangGraph — proof the orchestration skills generalize past one library.</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- 6 Reddit monitor -->
-      <article class="project-card reveal">
-        <div class="project-side">
-          <p class="project-index">06 / Product Thinking</p>
-          <h3>AI Reddit Brand Monitor</h3>
-          <p style="color:var(--text-secondary); font-size:14px;">Local-LLM sentiment dashboard for brand tracking.</p>
-          <div class="project-stack">
-            <span class="stack-pill">Ollama</span><span class="stack-pill">PRAW</span>
-            <span class="stack-pill">Streamlit</span><span class="stack-pill">Plotly</span>
-          </div>
-          <div class="project-links">
-            <a class="github" href="https://github.com/rahul-x-saini/ai_reddit_business_analyst" target="_blank" rel="noopener">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="pbf">
-            <p class="pbf-label">Problem</p>
-            <p>Businesses need to know what's being said about them on Reddit without someone manually reading every thread.</p>
-          </div>
-          <div class="pbf">
-            <p class="pbf-label">Approach</p>
-            <p>PRAW-based scraping with a JSON fallback feeds a local LLM (via Ollama) that classifies each mention by sentiment, topic, and urgency. A Streamlit + Plotly dashboard visualizes the breakdown and auto-generates positive-feedback, negative-issue, and feature-request summaries.</p>
-          </div>
-          <div class="pbf">
-            <p class="pbf-label result">Result</p>
-            <p>An end-to-end product loop — collection to actionable insight — running entirely on local inference, no API cost per classification.</p>
-          </div>
-        </div>
-      </article>
-
-      <!-- 7 Recommender -->
-      <article class="project-card reveal">
-        <div class="project-side">
-          <p class="project-index">07 / Evaluation Case Study</p>
-          <h3>Hybrid Movie Recommender</h3>
-          <p style="color:var(--text-secondary); font-size:14px;">Where the honest result mattered more than a clean win.</p>
-          <div class="project-stack">
-            <span class="stack-pill">XGBoost</span><span class="stack-pill">MLflow</span>
-            <span class="stack-pill">Docker</span><span class="stack-pill">GCP</span>
-          </div>
-          <div class="project-links">
-            <a class="live" href="https://drive.google.com/file/d/1ildfLe1QS53dVf1ddTfEHUFC4mFRBGBG/view?usp=sharing" target="_blank" rel="noopener">Demo Video ↗</a>
-            <a class="github" href="https://github.com/rahul-x-saini/hybrid_movie_recommender" target="_blank" rel="noopener">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="project-body">
-          <div class="pbf">
-            <p class="pbf-label">Approach</p>
-            <p>Collaborative filtering (matrix factorization) and content-based filtering (TF-IDF) generate candidates, re-ranked by an <strong>XGBoost Learning-to-Rank</strong> model. Every experiment — hyperparameters, Precision@K, Recall@K, NDCG, Hit Rate — is logged in MLflow; deployed via Docker on GCP.</p>
-          </div>
-          <div class="pbf">
-            <p class="pbf-label result">Honest Result</p>
-            <p>Evaluation showed the <strong>popularity baseline actually outperformed</strong> the trained ranker. Rather than hide that, I'm including it as a case study: rigorous, logged evaluation — and the willingness to report a model that didn't beat baseline — over a premature "it works" claim.</p>
-          </div>
-        </div>
-      </article>
-
     </div>
   </section>
 
@@ -696,9 +615,41 @@
   <section id="other-projects">
     <div class="wrap">
       <div class="section-head reveal">
-        <p class="eyebrow">More Builds</p>
-        <h2>Smaller systems, same habits.</h2>
-        <p>Shipped for practice and range — local inference, multimodal generation, and tool-using agents.</p>
+        <p class="eyebrow">Learning Outcomes</p>
+        <h2>Learning projects.</h2>
+        <p>Built to learn, not to showcase. Each one taught me a new framework, tool, or pattern, and they're here so you can see how my skills grew.</p>
+      </div>
+      <div class="group-head reveal">
+        <h3 class="group-title">Learning in practice</h3>
+        <p class="group-tag">Built to learn new frameworks, work with real data, and test what I'd learned.</p>
+      </div>
+      <div class="other-grid reveal">
+        <div class="other-card">
+          <h4>Hybrid Movie Recommender</h4>
+          <p>Collaborative filtering and TF-IDF content similarity, re-ranked with XGBoost Learning-to-Rank and tracked in MLflow. Evaluation showed the popularity baseline beat the ranker, a lesson in honest evaluation.</p>
+          <div class="other-tags"><span>XGBoost</span><span>MLflow</span><span>FastAPI</span><span>Docker</span><span>GCP</span></div>
+          <div class="other-links">
+            <a class="gh" href="https://github.com/rahul-x-saini/hybrid_movie_recommender" target="_blank" rel="noopener">GitHub ↗</a>
+            <a class="gh" href="https://drive.google.com/file/d/1ildfLe1QS53dVf1ddTfEHUFC4mFRBGBG/view?usp=sharing" target="_blank" rel="noopener">Demo Video ↗</a>
+          </div>
+        </div>
+        <div class="other-card">
+          <h4>AI Guide Generator</h4>
+          <p>A two-stage CrewAI pipeline: a hierarchical research crew (YouTube, Web, Arxiv and Document agents) feeds a sequential writing crew that drafts a beginner-friendly guide.</p>
+          <div class="other-tags"><span>CrewAI</span><span>CrewAI Flow</span></div>
+          <a class="gh" href="https://github.com/rahul-x-saini/ai_learning_guide" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+        <div class="other-card">
+          <h4>AI Reddit Brand Monitor</h4>
+          <p>Tracks brand mentions on Reddit. A local LLM via Ollama classifies sentiment, topic and urgency, shown on a Streamlit + Plotly dashboard with auto-generated summaries.</p>
+          <div class="other-tags"><span>Ollama</span><span>PRAW</span><span>Streamlit</span><span>Plotly</span></div>
+          <a class="gh" href="https://github.com/rahul-x-saini/ai_reddit_business_analyst" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="group-head reveal group-second">
+        <h3 class="group-title">Where it started</h3>
+        <p class="group-tag">Early projects from the start of my journey, where I learned the basics.</p>
       </div>
       <div class="other-grid reveal">
         <div class="other-card">
